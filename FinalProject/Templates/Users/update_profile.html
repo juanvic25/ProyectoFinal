@@ -1,0 +1,21 @@
+{% extends 'menu.html' %}
+
+{% block title %}Editar Perfil{% endblock %}
+
+{% block content %}
+
+{% if form %}
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{form.as_table}}
+        </table>
+        <p></p>
+        <input type="submit" value="Grabar">
+    </form>
+{% endif %}
+{% if form_errores %}
+    {{form.errors}}
+{% endif %}
+
+{% endblock %}
