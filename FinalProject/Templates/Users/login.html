@@ -1,23 +1,32 @@
 {% extends 'menu.html'%}
 
 {% block title %}Loguearte{% endblock %}
+
+{% block categories %}
+    {% if categories %}
+        {% for category in categories%}
+            <a class="dropdown-item" href="#">{{category.name}}</a>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
 {% block content %}
-<h2 style="text-align:center;" >Ingresar su Usuario y Contraseña</h2>
-<div class="card" style=" margin: 20px 410px 20px;">
-    <p></p>
-    {% if form %}
-        <form action="" method="POST">
-            {% csrf_token %}
-            <table>
-                {{form.as_table}}
-            </table>
-            <p></p>
-            <input type="submit" value="Ingresar">
-        </form>
-    {% endif %}
-    {% if error %}
+    <h2 style="text-align:center;" >Ingresar su Usuario y Contraseña</h2>
+    <div class="card" style=" margin: 20px 410px 20px;">
         <p></p>
-        <p style="color: crimson;">{{error}}</p>
-    {% endif %}
-</div>
+        {% if form %}
+            <form action="" method="POST">
+                {% csrf_token %}
+                <table>
+                    {{form.as_table}}
+                </table>
+                <p></p>
+                <input type="submit" value="Ingresar">
+            </form>
+        {% endif %}
+        {% if error %}
+            <p></p>
+            <p style="color: crimson;">{{error}}</p>
+        {% endif %}
+    </div>
 {% endblock %}
