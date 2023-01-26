@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from Users.forms import UserProfileForm
 from Users.models import UserProfile
@@ -86,8 +86,27 @@ def register(request):
         else:
             context={
                 'categories': categories_all,
-                'errors': form.errors,
+                'error': form.errors,
                 'form': UserCreationForm
             }
             return render(request, 'Users/register.html',context=context)
-    
+
+def changePassword(request):
+    categories_all = categories.objects.filter(active = True)
+    user = request.user
+    if request.method=='GET':
+        context = {'categories': categories_all,
+                    'form':PasswordChangeForm(user) }
+        return render(request,'Users/password.html',context=context)
+    elif request.method =='POST':
+        form = PasswordChangeForm(request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/Users/logout')
+        else:
+            context={
+                'categories': categories_all,
+                'error': form.errors,
+                'form': PasswordChangeForm
+            }
+            return render(request, 'Users/password.html',context=context)
