@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from Movies.forms import CategoryForm
-from Movies.models import categories
+from django.views.generic import ListView
+from Movies.forms import CategoryForm, MovieForm
+from Movies.models import categories, movies
 
 def createCategory(request):
-    print(1)
     categories_active = categories.objects.filter(active = True)
     if request.method == 'GET':
         categories_all = categories.objects.all()
@@ -34,3 +34,37 @@ def createCategory(request):
                         'errors': form.errors
             }
             return render(request,'Movies/categories.html',context=context)
+
+def createMovies(request):
+    categories_active = categories.objects.filter(active = True)
+    if request.method == 'GET':
+        context = {
+                    'categories':categories_active,
+                    'form':MovieForm()
+        }
+        return render(request,'Movies/create_movies.html',context=context)
+    elif request.method == 'POST':
+        form = MovieForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            context = {
+                        'categories':categories_active,
+                        'form':MovieForm()
+            }
+            return render(request,'Movies/create_movies.html',context=context)
+        else:
+            context = {
+                        'categories':categories_active,
+                        'form':MovieForm(),
+                        'errors': form.errors
+            }
+            return render(request,'Movies/create_movies.html',context=context)
+
+def listMovies(request):
+    categories_active = categories.objects.filter(active = True)
+    movies_list = movies.objects.all()
+    context = {
+                'categories':categories_active,
+                'movies' : movies_list
+            }
+    return render(request,'Movies/list_movies.html',context=context)
