@@ -68,3 +68,49 @@ def listMovies(request):
                 'movies' : movies_list
             }
     return render(request,'Movies/list_movies.html',context=context)
+
+
+def updateMovie(request, id):
+    categories_active = categories.objects.filter(active = True)
+    movie = movies.objects.get(id=id)
+    if request.method == 'GET':
+        context = {
+            'categories':categories_active,
+            'form': MovieForm(
+                        initial= {
+                            'title' : movie.title, 
+                            'summary'   : movie.summary,
+                            'release_date'   : movie.release_date,
+                            'director' : movie.director,
+                            'poster': movie.poster,
+                            'duration'   : movie.duration,
+                          #  'category'   : movie.category,
+                            'active'   : movie.active,
+                        }
+                    )
+        }
+        return render(request,'Movies/update_movie.html',context=context)
+
+    elif request.method == 'POST':
+        form = MovieForm(request.POST)
+        if form.is_valid():
+            movie.title=form.cleaned_data['title'] 
+            movie.summary=form.cleaned_data['summary']
+            movie.release_date = form.cleaned_data['release_date']
+            movie.director=form.cleaned_data['director']
+            movie.poster=form.cleaned_data['poster']
+            movie.duration=form.cleaned_data['duration']
+         #   movie.category=form.cleaned_data['category']
+            movie.active=form.cleaned_data['active']
+            movie.save()
+            context = {
+                'categories':categories_active,
+                'mensaje': 'Se Edito el Profesor correctamente'
+            }
+        else:
+            context = {
+                'categories':categories_active,
+                'form_errores': form.errors,
+                'form' : MovieForm()
+            }
+        return render(request,'Movies/update_movie.html',context=context)

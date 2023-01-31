@@ -1,0 +1,31 @@
+{% extends 'menu.html'%}
+
+{% block title %}Registrar Peliculas{% endblock %}
+
+{% block categories %}
+{% if categories %}
+    {% for category in categories%}
+        <a class="dropdown-item" href="#">{{category.name}}</a>
+    {% endfor %}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="card" style=" margin: 20px 410px 20px;">
+    <p></p>
+    {% if form %}
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table>
+                {{form.as_table}}
+            </table>
+            <p></p>
+            <input type="submit" value="Grabar">
+        </form>
+    {% endif %}
+    {% if error %}
+        <p></p>
+        <p style="color: crimson;">{{error}}</p>
+    {% endif %}
+</div>
+{% endblock %}

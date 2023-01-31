@@ -16,14 +16,38 @@
         <div class="card mb-3" style="max-width: 740px;">
             <div class="row no-gutters">
               <div class="col-md-4" >
-                <img src="{{movie.poster.url}}" width="150px" height="200px" >
+                {%if movie.poster%}
+                  <img src="{{movie.poster.url}}" width="150px" height="200px" >
+                {% endif %}
                 </div>
               <div class="col-md-8">
                 <div class="card-body">
                   <h5 class="card-title">{{movie.title}}</h5>
                   <p class="card-text">{{movie.summary}}</p>
-                  <p class="card-text">Categorias: {{movie.categories.name}}</p>
-                  <p class="card-text">Activo: {{movie.active}}</p>
+                  
+                  <p>
+
+                    <div class="form-group" style="max-width: 200px;">
+                      <label for="exampleFormControlSelect1">Categorias:</label>
+                      <select multiple class="form-control" id="exampleFormControlSelect1">
+                        {% for category in categories%}
+                        {%if category in movie.category.all%}
+                          <option selected>{{category.name}}</option>
+                          {%else%}
+                          <option >{{category.name}}</option>
+                          {% endif %}
+                      {% endfor %}
+                      </select>
+                    </div>
+                  </p>
+
+
+
+                  {% if movie.active == True %}
+                    <label><input type="checkbox" value="activo" checked> Activo</label>
+                  {% else %}
+                    <label><input type="checkbox" value="activo"> Activo</label>
+                  {% endif %}
                   
                   <form method="GET" action="/Movies/updateMovie/{{movie.id}}/">
                     <input type="submit" value="Editar"/>
