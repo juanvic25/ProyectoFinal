@@ -1,0 +1,54 @@
+{% extends 'menu.html'%}
+
+{% block title %}Registrar Reseñas{% endblock %}
+
+{% block categories %}
+{% if categories %}
+    {% for category in categories%}
+        <a class="dropdown-item" href="#">{{category.name}}</a>
+    {% endfor %}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% if movie %}
+<table border="2">
+    <tr>
+        {% if movie.poster %}
+            <td rowspan="6"> <img src="{{movie.poster.url}}" width="150px" height="200px" alt="POSTER"></td>
+        {% else %}
+            <td rowspan="6"> <img width="150px" height="200px" alt="POSTER"></td>
+        {% endif %}
+    </tr>
+    <tr><td><h2>{{movie.title}}</h2></td></tr>
+    <tr><td><p style="width: 700px;">{{movie.summary}}</p></td></tr>
+    <tr><td><b>Director: </b>{{movie.director}}</td></tr>
+    <tr><td><b>Duración: </b>{{movie.duration}} min.</td></tr>
+    <tr><td><b>Fecha de Lanzamiento: </b>{{movie.release_date|date:"d/m/y"}}</td></tr>
+</table><br/>
+
+{% endif %}
+
+<h3>Reseñas</h3>
+
+{% for review in reviews%}
+    <table border="2" style="width: 750px;">
+        <tr>
+            <td style="text-align: center; width: 100px;"><h4>Puntaje</h4></td>
+            <td rowspan="2" style="background-color:lightsteelblue;">{{review.summary}}</td>
+        </tr>
+        <tr>
+            <td style="text-align: center;"><h3>{{review.score}}</h3></td>
+        </tr>
+    </table>
+    <table style="width: 750px;">
+        <tr>
+            <td style="text-align: center; width: 100px;"><b>{{review.user.user.username}}</b></td>
+            <td style="text-align: right;"><b>{{review.date|date:"d/m/y"}}</b></td>
+        </tr>
+    </table><br/>
+
+{% endfor %}
+
+{% endblock %}

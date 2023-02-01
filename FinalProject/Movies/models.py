@@ -14,6 +14,9 @@ class movies(models.Model):
     director    = models.CharField(max_length=100,null=True, blank=True)
     poster      = models.ImageField(upload_to='poster', null=True, blank=True)
     duration    = models.IntegerField(null=True, blank=True)
-    category    = models.ManyToManyField(categories,null=False, blank=False)
+    category    = models.ManyToManyField(categories)
     active      = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title
     
