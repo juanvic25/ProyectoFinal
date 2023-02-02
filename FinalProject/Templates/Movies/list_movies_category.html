@@ -5,27 +5,25 @@
 {% block categories %}
 {% if categories %}
     {% for category in categories%}
-        <a class="dropdown-item" href="/Movies/listMoviesCategory/{{category.id}}/">{{category.name}}</a>
+    <a class="dropdown-item" href="/Movies/listMoviesCategory/{{category.id}}/">{{category.name}}</a>
     {% endfor %}
 {% endif %}
 {% endblock %}
 
 {% block buscar %}
-<form class="form-inline my-2 my-lg-0" action="/Movies/listMovies/" method="GET">
-  <input class="form-control mr-sm-2" type="search" placeholder="Titulo de Pelicula" aria-label="Search" name="search" align="right">
+<form class="form-inline my-2 my-lg-0" action="/Movies/listMoviesCategory/{{category_select.id}}" method="GET">
+  <input class="form-control mr-sm-2" type="search" placeholder="Titulo de Pelicula" aria-label="Search" name="search">
   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
 </form>
 {% endblock %}
 
 {% block content %}
 <h4>CATALOGO DE PELICULAS</h4>
-{% for category in categories %}
-
-  <p>{{category.name}}</p><hr/>
+  <p>{{category_select.name}}</p><hr/>
   <table>
     <tr >
       {% for movie in movies %}
-        {%if category in movie.category.all%}
+        {%if category_select in movie.category.all%}
           <td style="width: 200px; text-align: center;">
           {%if movie.poster%}
             <img src="{{movie.poster.url}}" width="150px" height="200px" >
@@ -38,9 +36,6 @@
         {% endif %}
       {% endfor %}
     </tr>
-
   </table><br/>
-{% endfor %}
-
 
 {% endblock %}

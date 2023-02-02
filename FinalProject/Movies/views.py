@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.views.generic import ListView
 from Movies.forms import CategoryForm, MovieForm
-from Movies.models import categories, movies
+from Movies.models import category, movie
 
 def createCategory(request):
-    categories_active = categories.objects.filter(active = True)
+    categories_active = category.objects.filter(active = True)
     if request.method == 'GET':
-        categories_all = categories.objects.all()
+        categories_all = category.objects.all()
         context = {
                     'categories':categories_active,
                     'categories_all':categories_all,
@@ -18,7 +18,7 @@ def createCategory(request):
         if form.is_valid():
             form.save()
 
-            categories_all = categories.objects.all()
+            categories_all = category.objects.all()
             context = {
                         'categories':categories_active,
                         'categories_all':categories_all,
@@ -26,7 +26,7 @@ def createCategory(request):
             }
             return render(request,'Movies/categories.html',context=context)
         else:
-            categories_all = categories.objects.all()
+            categories_all = category.objects.all()
             context = {
                         'categories':categories_active,
                         'categories_all':categories_all,
@@ -36,7 +36,7 @@ def createCategory(request):
             return render(request,'Movies/categories.html',context=context)
 
 def createMovies(request):
-    categories_active = categories.objects.filter(active = True)
+    categories_active = category.objects.filter(active = True)
     if request.method == 'GET':
         context = {
                     'categories':categories_active,
@@ -61,8 +61,12 @@ def createMovies(request):
             return render(request,'Movies/create_movies.html',context=context)
 
 def listMovies(request):
-    categories_active = categories.objects.filter(active = True)
-    movies_list = movies.objects.all()
+    categories_active = category.objects.filter(active = True)
+    if 'search' in request.GET:
+        filtro = request.GET['search']
+        movies_list = movie.objects.filter(title__contains=filtro)
+    else:
+        movies_list = movie.objects.all()
     context = {
                 'categories':categories_active,
                 'movies' : movies_list
@@ -70,9 +74,24 @@ def listMovies(request):
     return render(request,'Movies/list_movies.html',context=context)
 
 
+def listMoviesCategory(request,id):
+    category_select = category.objects.get(id=id)
+    categories_active = category.objects.filter(active = True)
+    if 'search' in request.GET:
+        filtro = request.GET['search']
+        movies_list = movie.objects.filter(title__contains=filtro)
+    else:
+        movies_list = movie.objects.all()
+    context = {
+                'categories':categories_active,
+                'category_select':category_select,
+                'movies' : movies_list
+            }
+    return render(request,'Movies/list_movies_category.html',context=context)
+
 def updateMovie(request, id):
-    categories_active = categories.objects.filter(active = True)
-    movie = movies.objects.get(id=id)
+    categories_active = category.objects.filter(active = True)
+    movie = movie.objects.get(id=id)
     if request.method == 'GET':
         context = {
             'categories':categories_active,

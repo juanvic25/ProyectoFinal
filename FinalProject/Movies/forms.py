@@ -1,12 +1,12 @@
 from django import forms
-from Movies.models import categories, movies
+from Movies.models import category, movie
 
 class CategoryForm(forms.ModelForm ):
     class Meta:
-        model = categories
+        model = category
         fields = ['name','active']
 
 class MovieForm(forms.ModelForm ):
     class Meta:
-        model = movies
+        model = movie
         fields = '__all__'

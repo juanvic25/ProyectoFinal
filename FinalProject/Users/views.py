@@ -4,10 +4,10 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, Pass
 from django.contrib.auth.models import User
 from Users.forms import UserProfileForm
 from Users.models import UserProfile
-from Movies.models import categories
+from Movies.models import category
 
 def login_view(request):
-    categories_all = categories.objects.filter(active = True)
+    categories_all = category.objects.filter(active = True)
     if request.method=='GET':
         context = {'categories': categories_all,
                     'form':AuthenticationForm}
@@ -36,7 +36,7 @@ def login_view(request):
             return render(request,'Users/login.html',context=context)
 
 def update_profile(request):
-    categories_all = categories.objects.filter(active = True)
+    categories_all = category.objects.filter(active = True)
     user = request.user
     if request.method =='GET':
         context = {
@@ -72,7 +72,7 @@ def update_profile(request):
             return render(request,'Users/update_profile.html',context=context)
 
 def register(request):
-    categories_all = categories.objects.filter(active = True)
+    categories_all = category.objects.filter(active = True)
     if request.method=='GET':
         context = {'categories': categories_all,
                     'form':UserCreationForm}
@@ -92,7 +92,7 @@ def register(request):
             return render(request, 'Users/register.html',context=context)
 
 def changePassword(request):
-    categories_all = categories.objects.filter(active = True)
+    categories_all = category.objects.filter(active = True)
     user = request.user
     if request.method=='GET':
         context = {'categories': categories_all,

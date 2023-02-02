@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from Reviews.forms import reviewForm
-from Movies.models import categories, movies
+from Movies.models import category, movie
 from Reviews.models import review
 
 def createReview(request):
-    categories_active = categories.objects.filter(active = True)
+    categories_active = category.objects.filter(active = True)
     if request.method == 'GET':
         context = {
                     'categories':categories_active,
@@ -34,12 +34,12 @@ def createReview(request):
             return render(request,'Reviews/create_review.html',context=context)
 
 def listReviews (request,id):
-    categories_active = categories.objects.filter(active = True)
-    movie = movies.objects.get(id=id)
-    reviews = review.objects.filter(title = movie)
+    categories_active = category.objects.filter(active = True)
+    movie_review = movie.objects.get(id=id)
+    reviews = review.objects.filter(title = movie_review)
     context= {
         'categories':categories_active,
-        'movie' : movie,
+        'movie' : movie_review,
         'reviews' :reviews
     }
     return render(request,'Reviews/list_reviews.html',context=context)

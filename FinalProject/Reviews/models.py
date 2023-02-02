@@ -1,5 +1,5 @@
 from django.db import models
-from Movies.models import movies
+from Movies.models import movie
 from Users.models import UserProfile
 
 class review(models.Model):
@@ -10,5 +10,5 @@ class review(models.Model):
     user        = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='profile')
     summary     = models.TextField(max_length=5000,null=False, blank=False)
     score       = models.IntegerField(choices=scores)
-    title       = models.ForeignKey(movies, on_delete=models.CASCADE, related_name='movie')
+    title       = models.ForeignKey(movie, on_delete=models.CASCADE, related_name='movie')
     date        = models.DateField(null=True, blank=True)

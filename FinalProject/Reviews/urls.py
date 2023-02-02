@@ -3,5 +3,5 @@ from Reviews.views import createReview, listReviews
 
 urlpatterns = [
     path("createReview/",createReview),
-    path("listReview/<int:id>/",listReviews),
+    path("listReviews/<int:id>/",listReviews),
 ]
