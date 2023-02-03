@@ -1,0 +1,87 @@
+{% extends 'menu.html'%}
+
+{% block title %}Registrar Reseñas{% endblock %}
+
+{% block categories %}
+{% if categories %}
+    {% for category in categories%}
+    <a class="dropdown-item" href="/Movies/listMoviesCategory/{{category.id}}/">{{category.name}}</a>
+    {% endfor %}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% if movie %}
+<table border="2" style="width: 850px;">
+    <tr>
+        {% if movie.poster %}
+            <td rowspan="6" style="width: 200px; text-align: center;"> <img src="{{movie.poster.url}}" width="180px" height="250px" alt="POSTER"></td>
+        {% else %}
+            <td rowspan="6" style="width: 200px; text-align: center;"> <img width="150px" height="200px" alt="POSTER"></td>
+        {% endif %}
+    </tr>
+    <tr><td><h2>{{movie.title}}</h2></td></tr>
+    <tr><td><p >{{movie.summary}}</p></td></tr>
+    <tr><td><b>Director: </b>{{movie.director}}</td></tr>
+    <tr><td><b>Duración: </b>{{movie.duration}} min.</td></tr>
+    <tr><td><b>Fecha de Lanzamiento: </b>{{movie.release_date|date:"d/m/y"}}</td></tr>
+</table><br/>
+{% endif %}
+
+{% if review %}
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="exampleFormControlTextarea1"><b>Ingresar Reseña:</b></label><br/>
+      <textarea rows="3" cols="113" name="summary">{{review.summary}}</textarea>
+    </div>
+    <div class="form-check form-check-inline">
+        <div><b>Ranking :</b></div>
+        <div class="form-check form-check-inline">
+            {% if review.score == 1 %}
+                <input class="form-check-input" type="radio" name="score" id="inlineRadio1" value="1" checked>
+            {% else %}
+                <input class="form-check-input" type="radio" name="score" id="inlineRadio1" value="1">
+            {% endif %}
+            <label class="form-check-label" for="inlineRadio1">1</label>
+        </div> 
+        <div class="form-check form-check-inline">
+            {% if review.score == 2 %}
+                <input class="form-check-input" type="radio" name="score" id="inlineRadio2" value="2" checked>
+            {% else %}
+                <input class="form-check-input" type="radio" name="score" id="inlineRadio2" value="2">
+            {% endif %}
+            <label class="form-check-label" for="inlineRadio2">2</label>
+        </div>
+        <div class="form-check form-check-inline">
+            {% if review.score == 3 %}
+                <input class="form-check-input" type="radio" name="score" id="inlineRadio3" value="3" checked>
+            {% else %}
+                <input class="form-check-input" type="radio" name="score" id="inlineRadio3" value="3">
+            {% endif %}
+            <label class="form-check-label" for="inlineRadio3">3</label>
+        </div>
+        <div class="form-check form-check-inline">
+            {% if review.score == 4 %}
+                <input class="form-check-input" type="radio" name="score" id="inlineRadio4" value="4" checked>
+            {% else %}
+                <input class="form-check-input" type="radio" name="score" id="inlineRadio4" value="4">
+            {% endif %}
+            <label class="form-check-label" for="inlineRadio4">4</label>
+        </div>
+        <div class="form-check form-check-inline">
+            {% if review.score == 5 %}
+                <input class="form-check-input" type="radio" name="score" id="inlineRadio5" value="5" checked>
+            {% else %}
+                <input class="form-check-input" type="radio" name="score" id="inlineRadio5" value="5">
+            {% endif %}
+            <label class="form-check-label" for="inlineRadio5">5</label>
+        </div>
+    </div>
+    <input class="btn btn-primary btn-sm" type="submit" value="Grabar"/>
+  </form><br/>
+{% endif %}
+  <hr/>
+
+{% endblock %}
