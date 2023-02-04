@@ -1,31 +1,65 @@
 {% extends 'menu.html'%}
 
-{% block title %}Registrar Peliculas{% endblock %}
+{% block title %}Registrar Reseñas{% endblock %}
 
 {% block categories %}
 {% if categories %}
     {% for category in categories%}
-        <a class="dropdown-item" href="#">{{category.name}}</a>
+    <a class="dropdown-item" href="/Movies/listMoviesCategory/{{category.id}}/">{{category.name}}</a>
     {% endfor %}
 {% endif %}
 {% endblock %}
 
 {% block content %}
-<div class="card" style=" margin: 20px 410px 20px;">
-    <p></p>
-    {% if form %}
-        <form action="" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <table>
-                {{form.as_table}}
-            </table>
-            <p></p>
-            <input type="submit" value="Grabar">
-        </form>
-    {% endif %}
-    {% if error %}
-        <p></p>
-        <p style="color: crimson;">{{error}}</p>
-    {% endif %}
-</div>
+{% if movie %}
+    <form>
+        <table>
+            <tr>
+                <td><b>Titulo:</b></td>
+                <td><textarea rows="1" cols="100">{{movie.title}}</textarea></td>
+            </tr>
+            <tr>
+                <td><b>Resumen:</b></td>
+                <td><textarea rows="8" cols="100">{{movie.summary}}</textarea></td>
+            </tr>
+            <tr>
+                <td><b>Director:</b></td>
+                <td><input type="text" name="director" value="{{movie.director}}"></td>
+            </tr>
+            <tr>
+                <td><b>Duración:</b></td>
+                <td><input type="text" name="Duration" value="{{movie.duration}}"></td>
+            </tr>
+            <tr>
+                <td><b>Fecha de Estreno:</b></td>
+                <td><input type="date" name="release_date" value={{movie.release_date | date:"d/m/Y"}}></td>
+            </tr>
+            <tr>
+                <td><b>Categorias:</b></td>
+                <td>
+                    <select multiple>
+                        {% for category in categories%}
+                            {% if category in movie.category %}
+                                <option selected>{{category.name}}</option>
+                            {% else %}
+                                <option>{{category.name}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Activo:</b></td>
+                {% if movie.active %}
+                    <td><input type="checkbox" name="active" checked></td>
+                {% else %}
+                    <td><input type="checkbox" name="active"></td>
+                {% endif %}
+            </tr>
+        </table>
+
+
+
+    </form>
+{% endif %}
 {% endblock %}

@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
-<h4>INGRESAR DATOS DE PELICULA</h4>
+<h4>ACTUALIZACIÓN DE PELICULA</h4>
 <div class="card">
     <p></p>
     {% if form %}
@@ -25,12 +25,12 @@
             <input type="submit" value="Guardar">
         </form>
     {% endif %}
-    {% if form_errors %}
+    {% if form_errores %}
         <h2 style="color: red;">Errores:</h2>
-        {{form_errors}}
+        {{form_errores}}
     {% endif %}
-    {% if message %}
-        <h2 style="color: green;">{{message}}</h2>
+    {% if mensaje %}
+        <h2 style="color: green;">{{mensaje}}</h2>
     {% endif %}
 </div>
 {% endblock %}

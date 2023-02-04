@@ -7,4 +7,4 @@ class categoryAdmin(admin.ModelAdmin):
 
 @admin.register(movie)
 class movieAdmin(admin.ModelAdmin): 
-    list_display = ('title','release_date','active')
+    list_display = ('title','release_date','score','active')

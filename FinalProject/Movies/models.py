@@ -16,6 +16,7 @@ class movie(models.Model):
     duration    = models.IntegerField(null=True, blank=True)
     category    = models.ManyToManyField(category)
     active      = models.BooleanField(default=True)
+    score       = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return self.title

@@ -20,20 +20,39 @@
 {% block content %}
 <h4>CATALOGO DE PELICULAS</h4>
 {% for category in categories %}
-
-  <p>{{category.name}}</p><hr/>
+<hr/>
+  <p><b>{{category.name}}</b></p>
   <table>
     <tr >
       {% for movie in movies %}
         {%if category in movie.category.all%}
           <td style="width: 200px; text-align: center;">
-          {%if movie.poster%}
-            <img src="{{movie.poster.url}}" width="150px" height="200px" >
-          {% endif %}<br/>
-          <p style="text-align: center; "><b>{{movie.title}}</b></p>
-          <form method="GET" action="/Reviews/listReviews/{{movie.id}}/">
-            <input class="btn btn-primary btn-sm" type="submit" value="Reseñas"/>
-          </form>
+            {%if movie.poster%}
+              <img src="{{movie.poster.url}}" width="150px" height="200px" >
+            {% endif %}<br/>
+            {% if movie.active %}
+              <p style="text-align: center; margin-bottom: -1%;"><b>{{movie.title}}</b></p>
+            {% else %}
+              <p style="text-align: center; margin-bottom: -1%; color: red;"><b>{{movie.title}}</b></p>
+            {% endif %}
+            {% if movie.score > 3 %}
+              <p style="text-align: center; color:green;"><b>{{movie.score}}</b></p>
+            {% elif movie.score == 3 %}  
+              <p style="text-align: center; color:goldenrod;"><b>{{movie.score}}</b></p>
+            {% elif movie.score < 3 %}     
+              <p style="text-align: center; color:crimson;"><b>{{movie.score}}</b></p>
+            {% else %}
+              <p style="text-align: center; color: blue;"><b>No Hay Reseñas</b></p>
+            {% endif %}
+            {% if request.user.is_superuser %}
+              <form method="GET" action="/Movies/updateMovie/{{movie.id}}/">
+                <input class="btn btn-primary btn-sm" type="submit" value="Editar"/>
+              </form>
+            {% else %}
+              <form method="GET" action="/Reviews/listReviews/{{movie.id}}/">
+                <input class="btn btn-primary btn-sm" type="submit" value="Reseñas"/>
+              </form>
+            {% endif %}
           </td>
         {% endif %}
       {% endfor %}

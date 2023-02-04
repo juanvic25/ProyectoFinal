@@ -32,6 +32,13 @@ def createReview(request,id):
                             date = datetime.now().date() )
        
         reviews = review.objects.filter(title = movie_review)
+        total = 0
+        for review_select in reviews:
+            total = total + review_select.score
+        total = total / len(reviews)
+
+        movie_review.score = round(total,1)
+        movie_review.save()
 
         context= {
             'categories':categories_active,
