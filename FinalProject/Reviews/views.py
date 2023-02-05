@@ -3,6 +3,18 @@ from Movies.models import category, movie
 from Reviews.models import review
 from datetime import datetime
 
+def updateScoreMovie(movie_review):
+    reviews = review.objects.filter(title = movie_review)
+    total = 0
+    if len(reviews) > 0:
+        for review_select in reviews:
+            total = total + review_select.score
+        total = total / len(reviews)
+        movie_review.score = round(total,1)
+    else:
+        movie_review.score = None
+    movie_review.save()
+
 def createReview(request,id):
     categories_active = category.objects.filter(active = True)
     movie_review = movie.objects.get(id=id)
@@ -32,13 +44,7 @@ def createReview(request,id):
                             date = datetime.now().date() )
        
         reviews = review.objects.filter(title = movie_review)
-        total = 0
-        for review_select in reviews:
-            total = total + review_select.score
-        total = total / len(reviews)
-
-        movie_review.score = round(total,1)
-        movie_review.save()
+        updateScoreMovie(movie_review)
 
         context= {
             'categories':categories_active,
@@ -64,6 +70,7 @@ def deleteReview(request, id, id_movie):
         movie_review = movie.objects.get(id=id_movie)
         review.objects.get(id=id).delete()
         reviews = review.objects.filter(title = movie_review)
+        updateScoreMovie(movie_review)
         context= {
             'categories':categories_active,
             'movie' : movie_review,
@@ -88,6 +95,7 @@ def updateReview(request, id, id_movie):
         review_select.date = datetime.now().date()
         review_select.save()
         reviews = review.objects.filter(title = movie_review)
+        updateScoreMovie(movie_review)
 
         context= {
             'categories':categories_active,

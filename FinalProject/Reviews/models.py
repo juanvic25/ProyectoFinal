@@ -3,7 +3,6 @@ from Movies.models import movie
 from Users.models import UserProfile
 
 class review(models.Model):
-
     scores  =   (
         (1,1),(2,2),(3,3),(4,4),(5,5)
     )

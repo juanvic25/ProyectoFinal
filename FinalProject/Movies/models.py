@@ -14,10 +14,9 @@ class movie(models.Model):
     director    = models.CharField(max_length=100,null=True, blank=True)
     poster      = models.ImageField(upload_to='poster', null=True, blank=True)
     duration    = models.IntegerField(null=True, blank=True)
-    category    = models.ManyToManyField(category)
+    category    = models.ForeignKey(category, on_delete=models.CASCADE, related_name='category',null=False, blank=False)
     active      = models.BooleanField(default=True)
     score       = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return self.title
-    

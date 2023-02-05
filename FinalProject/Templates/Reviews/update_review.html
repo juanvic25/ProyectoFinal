@@ -5,18 +5,33 @@
 {% block content %}
 
 {% if movie %}
-<table border="2" style="width: 850px;">
+<table border="2" style="width: 970px;">
     <tr>
         {% if movie.poster %}
-            <td rowspan="6" style="width: 200px; text-align: center;"> <img src="{{movie.poster.url}}" width="180px" height="250px" alt="POSTER"></td>
+            <td rowspan="7" style="width: 200px; text-align: center;"> <img src="{{movie.poster.url}}" width="180px" height="250px" alt="POSTER"></td>
         {% else %}
-            <td rowspan="6" style="width: 200px; text-align: center;"> <img width="150px" height="200px" alt="POSTER"></td>
+            <td rowspan="7" style="width: 200px; text-align: center;"> <img width="150px" height="200px" alt="POSTER"></td>
         {% endif %}
     </tr>
-    <tr><td><h2>{{movie.title}}</h2></td></tr>
-    <tr><td><p >{{movie.summary}}</p></td></tr>
+    <tr>
+        <td><h2>{{movie.title}}</h2></td>
+        <td style="text-align: center;"><h4>Puntaje Promedio</h4></td></tr>
+    </tr>
+    <tr>
+        <td><p>{{movie.summary}}</p></td>
+        {% if movie.score > 3 %}
+            <td rowspan="6" style="text-align: center; color:green"><h1>{{movie.score}}</h1></td>
+        {% elif movie.score == 3 %}  
+            <td rowspan="6" style="text-align: center; color:goldenrod"><h1>{{movie.score}}</h1></td>
+        {% elif movie.score < 3 %}     
+            <td rowspan="6" style="text-align: center; color:crimson;"><h1>{{movie.score}}</h1></td>
+        {% else %}
+            <td rowspan="6" style="text-align: center; color: blue;"><h3>No Hay Reseñas</h3></td>
+        {% endif %}
+    </tr>
     <tr><td><b>Director: </b>{{movie.director}}</td></tr>
     <tr><td><b>Duración: </b>{{movie.duration}} min.</td></tr>
+    <tr><td><b>Categoria: </b>{{movie.category}}</td></tr>
     <tr><td><b>Fecha de Lanzamiento: </b>{{movie.release_date|date:"d/m/y"}}</td></tr>
 </table><br/>
 {% endif %}
@@ -26,7 +41,7 @@
     {% csrf_token %}
     <div class="form-group">
       <label for="exampleFormControlTextarea1"><b>Ingresar Reseña:</b></label><br/>
-      <textarea rows="3" cols="113" name="summary">{{review.summary}}</textarea>
+      <textarea rows="3" cols="121" name="summary">{{review.summary}}</textarea>
     </div>
     <div class="form-check form-check-inline">
         <div><b>Ranking :</b></div>

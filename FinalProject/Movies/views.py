@@ -1,5 +1,4 @@
-from django.shortcuts import render, redirect
-from django.views.generic import ListView
+from django.shortcuts import render
 from Movies.forms import CategoryForm, MovieForm
 from Movies.models import category, movie
 
@@ -83,17 +82,16 @@ def createMovies(request):
     elif request.method == 'POST':
         form = MovieForm(request.POST, request.FILES)
         if form.is_valid():
-            movie_new = movie.objects.create(
+            movie.objects.create(
                 title     = form.cleaned_data['Titulo'] ,
                 summary   = form.cleaned_data['Resumen'],
                 release_date = form.cleaned_data['Fecha_Estreno'],
                 director  = form.cleaned_data['Director'],
                 poster    = form.cleaned_data['Poster'],
                 duration  = form.cleaned_data['Duracion'],
+                category  = form.cleaned_data['Categoria'],
                 active    = form.cleaned_data['Activo']
             )
-            movie_new.category.set(form.cleaned_data['Categorias'])
-            movie_new.save()
             context = {
                         'categories':categories_active,
                         'message':'Pelicula registrada Correctamente',
@@ -120,10 +118,9 @@ def updateMovie(request, id):
                                 'Director':movie_review.director,
                                 'Poster':movie_review.poster,
                                 'Duracion':movie_review.duration,
-                                #'Categorias':movie_review.category.objects.all(),
+                                'Categoria':movie_review.category,
                                 'Activo':movie_review.active
                                 })
-        #form.changed_data['Categorias'].set(movie_review.category)
         context = {
             'categories':categories_active,
             'movie': movie_review,
@@ -133,19 +130,19 @@ def updateMovie(request, id):
         return render(request,'Movies/update_movie2.html',context=context)
 
     elif request.method == 'POST':
-        form = MovieForm(request.POST, request.FILES)
+        form = MovieForm(data = request.POST, files = request.FILES)
 
         if form.is_valid():
             movie_review.title     = form.cleaned_data['Titulo'] 
             movie_review.summary   = form.cleaned_data['Resumen']
             movie_review.release_date = form.cleaned_data['Fecha_Estreno']
             movie_review.director  = form.cleaned_data['Director']
-            movie_review.poster    = form.cleaned_data['Poster']
+            if form.cleaned_data['Poster'] != None:
+                movie_review.poster = form.cleaned_data['Poster']
             movie_review.duration  = form.cleaned_data['Duracion']
-            #movie_review.category  = form.cleaned_data['Categorias']
+            movie_review.category  = form.cleaned_data['Categoria']
             movie_review.active    = form.cleaned_data['Activo']
             movie_review.save()
-
             context = {
                         'categories':categories_active,
                         'movies' : movie.objects.all()

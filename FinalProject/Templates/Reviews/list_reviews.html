@@ -31,19 +31,17 @@
     </tr>
     <tr><td><b>Director: </b>{{movie.director}}</td></tr>
     <tr><td><b>Duración: </b>{{movie.duration}} min.</td></tr>
-    <tr><td><b>Categorias: </b>
-        {%for category_select in movie.category.all%}
-           {{category_select}},
-        {% endfor %}
-    </td></tr>
+    <tr><td><b>Categoria: </b>{{movie.category}}</td></tr>
     <tr><td><b>Fecha de Lanzamiento: </b>{{movie.release_date|date:"d/m/y"}}</td></tr>
 </table><br/>
 {% endif %}
 
 {% if request.user.is_authenticated %}
-<form class="form-inline my-2 my-lg-0" action="/Reviews/createReview/{{movie.id}}/" method="GET">
-    <input class="btn btn-primary btn-sm" type="submit" value="Registrar Reseña"/>
-</form>
+    {% if request.user.is_superuser == False %}
+        <form class="form-inline my-2 my-lg-0" action="/Reviews/createReview/{{movie.id}}/" method="GET">
+            <input class="btn btn-primary btn-sm" type="submit" value="Registrar Reseña"/>
+        </form>
+    {% endif %}
 {% else %}
     <p style="color: blue;"><b>DEBES LOGUEARTE PARA PODER REGISTRAR UNA RESEÑA</b></p>
 {% endif %}
@@ -55,7 +53,7 @@
 
 <h4>Reseñas de los Usuarios</h4>
 {% for review in reviews%}
-    <table border="1" style="width: 850px; background-color:azure">
+    <table border="1" style="width: 970px; background-color:azure">
         <tr>
             <td style="text-align: center; width: 100px;"><h5>Puntaje</h5></td>
             <td rowspan="2" >{{review.summary}}</td>
@@ -70,25 +68,26 @@
             {% endif %}
         </tr>
     </table>
-    <table style="width: 850px;">
+    <table style="width: 970px;">
         <tr>
-            <td style="width: 80px;"> 
-                {% if review.user.user.username == request.user.username %}
-                <form action="/Reviews/updateReview/{{review.id}}/{{movie.id}}/" method="get">
-                    <input class="btn btn-primary btn-sm" type="submit" value="Editar"/>
-                </form>
-                {%endif%}
-            </td>
-            <td>
-                {% if review.user.user.username == request.user.username %}
+            <td style="width: 80px;">
+                {% if review.user.user.username == request.user.username or request.user.is_superuser %}
                 <form action="/Reviews/deleteReview/{{review.id}}/{{movie.id}}/" method="post">
                     {% csrf_token %}
                     <input class="btn btn-primary btn-sm" type="submit" value="Eliminar"/>
                 </form>
                 {%endif%}
             </td>
+            <td > 
+                {% if review.user.user.username == request.user.username %}
+                <form action="/Reviews/updateReview/{{review.id}}/{{movie.id}}/" method="get">
+                    <input class="btn btn-primary btn-sm" type="submit" value="Editar"/>
+                </form>
+                {%endif%}
+            </td>
             <td style="text-align: right; width: 220px; color: crimson;">
-                {{review.date|date:"d/m/y"}} | <b>{{review.user.user.username}}</b></td>
+                {{review.date|date:"d/m/Y"}} | <b>{{review.user.user.username}}</b>
+            </td>
         </tr>
     </table><br/>
 

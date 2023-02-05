@@ -65,7 +65,8 @@ def update_profile(request):
             user.profile.last_name  = form.cleaned_data['last_name']
             user.profile.email      = form.cleaned_data['email']
             user.profile.date_birth = form.cleaned_data['date_birth']
-            user.profile.avatar     = form.cleaned_data['avatar']
+            if form.cleaned_data['avatar'] != None:
+                user.profile.avatar = form.cleaned_data['avatar']
             user.profile.save()
 
             if request.user.is_superuser:
@@ -76,7 +77,7 @@ def update_profile(request):
             context={'categories': categories_all,
                             'movies':movies_list}
 
-            return render(request,'/Movies/list_movies.html',context=context)
+            return render(request,'Movies/list_movies.html',context=context)
         else:
             context={'categories': categories_all,
                     'form_errores': form.errors,
