@@ -1,8 +1,8 @@
 from django.db import models
 
 class category(models.Model):
-    name   = models.CharField(max_length=100)
-    active = models.BooleanField( default=True)
+    name   = models.CharField(max_length=100, verbose_name="Nombre")
+    active = models.BooleanField( default=True, verbose_name="Activo")
 
     def __str__(self):
         return self.name

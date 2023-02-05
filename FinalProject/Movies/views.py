@@ -13,7 +13,7 @@ def createCategory(request):
         }
         return render(request,'Movies/create_category.html',context=context)
     elif request.method == 'POST':
-        form = CategoryForm(request.POST)
+        form = CategoryForm(data = request.POST)
         if form.is_valid():
             category.objects.create(name=form.cleaned_data['name'], active=form.cleaned_data['active'])
             categories_all = category.objects.all()
@@ -38,23 +38,17 @@ def updateCategory(request,id):
     category_select = category.objects.get(id=id)
     categories_all = category.objects.all()
     if request.method == 'GET':
-        form = CategoryForm(initial={
-                                'name' : category_select.name,
-                                'active' : category_select.active
-                            })
         context = {
                     'categories':categories_active,
                     'categories_all':categories_all,
-                    'form':form
+                    'form':CategoryForm(instance=category_select)
         }
         return render(request,'Movies/update_category.html',context=context)
 
     elif request.method == 'POST':
-        form = CategoryForm(request.POST)
+        form = CategoryForm(data = request.POST, instance=category_select)
         if form.is_valid():
-            category_select.name = form.cleaned_data['name']
-            category_select.active = form.cleaned_data['active']
-            category_select.save()
+            form.save()
             categories_all = category.objects.all()
             context = {
                         'categories':categories_active,
@@ -83,14 +77,14 @@ def createMovies(request):
         form = MovieForm(request.POST, request.FILES)
         if form.is_valid():
             movie.objects.create(
-                title     = form.cleaned_data['Titulo'] ,
-                summary   = form.cleaned_data['Resumen'],
-                release_date = form.cleaned_data['Fecha_Estreno'],
-                director  = form.cleaned_data['Director'],
-                poster    = form.cleaned_data['Poster'],
-                duration  = form.cleaned_data['Duracion'],
-                category  = form.cleaned_data['Categoria'],
-                active    = form.cleaned_data['Activo']
+                title     = form.cleaned_data['title'] ,
+                summary   = form.cleaned_data['summary'],
+                release_date = form.cleaned_data['release_date'],
+                director  = form.cleaned_data['director'],
+                poster    = form.cleaned_data['poster'],
+                duration  = form.cleaned_data['duration'],
+                category  = form.cleaned_data['category'],
+                active    = form.cleaned_data['active']
             )
             context = {
                         'categories':categories_active,
@@ -111,38 +105,17 @@ def updateMovie(request, id):
     movie_review = movie.objects.get(id=id)
     
     if request.method == 'GET':
-        form = MovieForm(initial={
-                                'Titulo':movie_review.title,
-                                'Resumen':movie_review.summary,
-                                'Fecha_Estreno':movie_review.release_date,
-                                'Director':movie_review.director,
-                                'Poster':movie_review.poster,
-                                'Duracion':movie_review.duration,
-                                'Categoria':movie_review.category,
-                                'Activo':movie_review.active
-                                })
         context = {
             'categories':categories_active,
             'movie': movie_review,
-            'form': form
+            'form': MovieForm(instance=movie_review)
         }
-        
-        return render(request,'Movies/update_movie2.html',context=context)
+        return render(request,'Movies/update_movie.html',context=context)
 
     elif request.method == 'POST':
-        form = MovieForm(data = request.POST, files = request.FILES)
-
+        form = MovieForm(data = request.POST, files = request.FILES, instance=movie_review)
         if form.is_valid():
-            movie_review.title     = form.cleaned_data['Titulo'] 
-            movie_review.summary   = form.cleaned_data['Resumen']
-            movie_review.release_date = form.cleaned_data['Fecha_Estreno']
-            movie_review.director  = form.cleaned_data['Director']
-            if form.cleaned_data['Poster'] != None:
-                movie_review.poster = form.cleaned_data['Poster']
-            movie_review.duration  = form.cleaned_data['Duracion']
-            movie_review.category  = form.cleaned_data['Categoria']
-            movie_review.active    = form.cleaned_data['Activo']
-            movie_review.save()
+            form.save()
             context = {
                         'categories':categories_active,
                         'movies' : movie.objects.all()
@@ -151,10 +124,10 @@ def updateMovie(request, id):
         else:
             context = {
                 'categories':categories_active,
-                'form_errores': form.errors,
-                'form' : MovieForm()
+                'form_errors': form.errors,
+                'form' : MovieForm(instance=movie_review)
             }
-        return render(request,'Movies/update_movie2.html',context=context)
+        return render(request,'Movies/update_movie.html',context=context)
 
 def listMovies(request):
     categories_active = category.objects.filter(active = True)

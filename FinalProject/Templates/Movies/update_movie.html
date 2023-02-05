@@ -3,55 +3,23 @@
 {% block title %}Registrar Reseñas{% endblock %}
 
 {% block content %}
-{% if movie %}
-    <form>
-        <table>
-            <tr>
-                <td><b>Titulo:</b></td>
-                <td><textarea rows="1" cols="100">{{movie.title}}</textarea></td>
-            </tr>
-            <tr>
-                <td><b>Resumen:</b></td>
-                <td><textarea rows="8" cols="100">{{movie.summary}}</textarea></td>
-            </tr>
-            <tr>
-                <td><b>Director:</b></td>
-                <td><input type="text" name="director" value="{{movie.director}}"></td>
-            </tr>
-            <tr>
-                <td><b>Duración:</b></td>
-                <td><input type="text" name="Duration" value="{{movie.duration}}"></td>
-            </tr>
-            <tr>
-                <td><b>Fecha de Estreno:</b></td>
-                <td><input type="date" name="release_date" value={{movie.release_date | date:"d/m/Y"}}></td>
-            </tr>
-            <tr>
-                <td><b>Categorias:</b></td>
-                <td>
-                    <select multiple>
-                        {% for category in categories%}
-                            {% if category in movie.category %}
-                                <option selected>{{category.name}}</option>
-                            {% else %}
-                                <option>{{category.name}}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><b>Activo:</b></td>
-                {% if movie.active %}
-                    <td><input type="checkbox" name="active" checked></td>
-                {% else %}
-                    <td><input type="checkbox" name="active"></td>
-                {% endif %}
-            </tr>
-        </table>
+<h4>ACTUALIZACIÓN DE PELICULA</h4>
+<div class="card">
+    <p></p>
+    {% if form %}
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-
-
-    </form>
-{% endif %}
+            <table>
+                {{form.as_table}}
+            </table>
+            <p></p>
+            <input type="submit" value="Guardar">
+        </form>
+    {% endif %}
+    {% if form_errors %}
+        <h2 style="color: red;">Errores:</h2>
+        {{form_errors}}
+    {% endif %}
+</div>
 {% endblock %}

@@ -5,3 +5,6 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['first_name','last_name','email','date_birth','avatar']
+        widgets = {
+            'date_birth':forms.DateInput(attrs={'type': 'date'}),
+        }

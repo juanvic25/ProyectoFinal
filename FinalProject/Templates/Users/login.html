@@ -3,22 +3,29 @@
 {% block title %}Loguearte{% endblock %}
 
 {% block content %}
-    <h2 style="text-align:center;" >Ingresar su Usuario y Contraseña</h2>
-    <div class="card" style=" margin: 20px 410px 20px;">
-        <p></p>
-        {% if form %}
-            <form action="" method="POST">
-                {% csrf_token %}
-                <table>
-                    {{form.as_table}}
-                </table>
-                <p></p>
-                <input type="submit" value="Ingresar">
-            </form>
-        {% endif %}
-        {% if error %}
-            <p></p>
-            <p style="color: crimson;">{{error}}</p>
-        {% endif %}
-    </div>
+<h2 style="text-align:center;" >Ingresar Usuario y Contraseña</h2><br/>
+<div class="card" style=" margin: 20px 420px 20px;">
+    {% if form %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td rowspan="2" width="200px" style="text-align: center;"><br/><img src="/Media/login.jpg" width="150px" height="100px"></td>
+                <td><br/><b>Usuario:</b></td>
+                <td><br/><b>{{form.username}}</b></td>
+            </tr>
+            <tr>
+                <td><b>Contraseña:</b></td>
+                <td><b>{{form.password}}</b></td>
+            </tr>
+            <tr>
+                <td colspan="3" style="text-align: right;"><input type="submit" value="Ingresar"></td>
+            </tr>
+        </table><br/>
+    </form>
+    {% endif %}
+    {% if error %}
+        <br/><p style="color: crimson;">{{error}}</p>
+    {% endif %}
+</div>
 {% endblock %}

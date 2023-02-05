@@ -5,16 +5,14 @@
 {% block content %}
 <h4>INGRESAR DATOS DE PELICULA</h4>
 <div class="card">
-    <p></p>
+    <br/>
     {% if form %}
         <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-
             <table>
                 {{form.as_table}}
             </table>
-            <p></p>
-            <input type="submit" value="Guardar">
+            <tr><td><input type="submit" value="Guardar"></td></tr>
         </form>
     {% endif %}
     {% if form_errors %}

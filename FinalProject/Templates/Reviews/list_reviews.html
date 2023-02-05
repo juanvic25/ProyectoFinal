@@ -1,3 +1,35 @@
+<style>
+    table{
+        width: 1000px; 
+    }
+    .poster{
+        width: 200px; 
+        text-align: center;
+    }
+    .detalles{
+        width: 650px; 
+    }
+    .score_good {
+    color:green;
+    text-align: center;
+    width: 120px;
+    }
+    .score_regular {
+    color:goldenrod;
+    text-align: center;
+    width: 120px;
+    }
+    .score_bad {
+    color:crimson;
+    text-align: center;
+    width: 120px;
+    }
+    .score_img{
+    border: 5px; 
+    border-radius: 50%;
+    }
+
+</style>
 {% extends 'menu.html'%}
 
 {% block title %}Registrar Reseñas{% endblock %}
@@ -5,72 +37,78 @@
 {% block content %}
 
 {% if movie %}
-<table border="2" style="width: 970px;">
+<table align="center">
     <tr>
         {% if movie.poster %}
-            <td rowspan="7" style="width: 200px; text-align: center;"> <img src="{{movie.poster.url}}" width="180px" height="250px" alt="POSTER"></td>
+            <td class="poster" rowspan="7"> <img src="{{movie.poster.url}}" width="180px" height="250px" alt="POSTER"></td>
         {% else %}
-            <td rowspan="7" style="width: 200px; text-align: center;"> <img width="150px" height="200px" alt="POSTER"></td>
+            <td class="poster" rowspan="7"> <img width="150px" height="200px" alt="POSTER"></td>
         {% endif %}
     </tr>
     <tr>
-        <td><h2>{{movie.title}}</h2></td>
-        <td style="text-align: center;"><h4>Puntaje Promedio</h4></td>
-    </tr>
-    <tr>
-        <td><p>{{movie.summary}}</p></td>
-        {% if movie.score > 3 %}
-            <td rowspan="6" style="text-align: center; color:green"><h1>{{movie.score}}</h1></td>
-        {% elif movie.score == 3 %}  
-            <td rowspan="6" style="text-align: center; color:goldenrod"><h1>{{movie.score}}</h1></td>
+        <td class="detalles"><h2>{{movie.title}}</h2></td>
+        {% if movie.score >= 4 %}
+            <td class="score_good" rowspan="7">
+                <img src="/Media/bien.jpg"><h1>{{movie.score}}</h1>
+            </td>
+        {% elif movie.score >= 3 and movie.score < 4 %}  
+            <td class="score_regular" rowspan="7">
+                <img src="/Media/regular.jpg"><h1>{{movie.score}}</h1>
+            </td>
         {% elif movie.score < 3 %}     
-            <td rowspan="6" style="text-align: center; color:crimson;"><h1>{{movie.score}}</h1></td>
+            <td class="score_bad" rowspan="7">
+                <img src="/Media/mal.jpg"><h1>{{movie.score}}</h1>
+            </td>
         {% else %}
-            <td rowspan="6" style="text-align: center; color: blue;"><h3>No Hay Reseñas</h3></td>
+            <td rowspan="7" style="text-align: center; color: blue;"><h3>No Hay Reseñas</h3></td>
         {% endif %}
     </tr>
-    <tr><td><b>Director: </b>{{movie.director}}</td></tr>
-    <tr><td><b>Duración: </b>{{movie.duration}} min.</td></tr>
-    <tr><td><b>Categoria: </b>{{movie.category}}</td></tr>
-    <tr><td><b>Fecha de Lanzamiento: </b>{{movie.release_date|date:"d/m/y"}}</td></tr>
+    <tr><td class="detalles"><p style="text-align: justify;">{{movie.summary}}</p></td></tr>
+    <tr><td class="detalles"><b>Director: </b>{{movie.director}}</td></tr>
+    <tr><td class="detalles"><b>Duración: </b>{{movie.duration}} min.</td></tr>
+    <tr><td class="detalles"><b>Categoria: </b>{{movie.category}}</td></tr>
+    <tr><td class="detalles"><b>Fecha de Lanzamiento: </b>{{movie.release_date|date:"d/m/y"}}</td></tr>
 </table><br/>
 {% endif %}
 
-{% if request.user.is_authenticated %}
-    {% if request.user.is_superuser == False %}
-        <form class="form-inline my-2 my-lg-0" action="/Reviews/createReview/{{movie.id}}/" method="GET">
-            <input class="btn btn-primary btn-sm" type="submit" value="Registrar Reseña"/>
-        </form>
-    {% endif %}
-{% else %}
-    <p style="color: blue;"><b>DEBES LOGUEARTE PARA PODER REGISTRAR UNA RESEÑA</b></p>
-{% endif %}
+<table align="center">
+    <tr><td>
+        {% if request.user.is_authenticated %}
+            {% if request.user.is_superuser == False %}
+                <form class="form-inline my-2 my-lg-0" action="/Reviews/createReview/{{movie.id}}/" method="GET">
+                    <input class="btn btn-primary btn-sm" type="submit" value="Registrar Reseña"/>
+                </form>
+            {% endif %}
+        {% else %}
+            <p style="color: blue;"><b>DEBES LOGUEARTE PARA PODER REGISTRAR UNA RESEÑA</b></p>
+        {% endif %}
+    </td></tr>
+</table>
 <hr/>
 
 {% if message%}
     <p style="color: red;">{{message}}</p>
 {% endif %}
 
-<h4>Reseñas de los Usuarios</h4>
+<table align="center">
+    <tr><td><h4>Reseñas de los Usuarios</h4></td></tr>
+</table>
 {% for review in reviews%}
-    <table border="1" style="width: 970px; background-color:azure">
-        <tr>
-            <td style="text-align: center; width: 100px;"><h5>Puntaje</h5></td>
-            <td rowspan="2" >{{review.summary}}</td>
-        </tr>
-        <tr>
-            {% if review.score > 3 %}
-                <td style="text-align: center; color:green"><h4>{{review.score}}</h4></td>
-            {% elif review.score == 3 %}  
-                <td style="text-align: center; color:goldenrod"><h4>{{review.score}}</h4></td>
+    <table border="1" align="center" rules="groups" style="background-color:whitesmoke">
+        <tr style="height: 30px;">
+            {% if review.score >= 4 %}
+                <td class="score_good" rowspan="3"><img class="score_img" src="/Media/bien.jpg"><h4>{{review.score}}</h4></td>
+            {% elif review.score >= 3 and review.score < 4 %}  
+                <td class="score_regular" rowspan="3"><img class="score_img" src="/Media/regular.jpg"><h4>{{review.score}}</h4></td>
             {% else %}     
-                <td style="text-align: center; color:crimson;"><h4>{{review.score}}</h4></td>
+                <td class="score_bad" rowspan="3"><img class="score_img" src="/Media/mal.jpg"><h4>{{review.score}}</h4></td>
             {% endif %}
+            <td style="color: crimson;"><b>{{review.user.user.username}}</b></td>
+            <td style="text-align: right; color: crimson;"><b>{{review.date|date:"d b Y"}}</b></td>
         </tr>
-    </table>
-    <table style="width: 970px;">
-        <tr>
-            <td style="width: 80px;">
+        <tr><td colspan="2"><p style="text-align: justify;">{{review.summary}}</p></td></tr>
+        <tr style="height: 20px;">
+            <td width="80px">
                 {% if review.user.user.username == request.user.username or request.user.is_superuser %}
                 <form action="/Reviews/deleteReview/{{review.id}}/{{movie.id}}/" method="post">
                     {% csrf_token %}
@@ -78,19 +116,16 @@
                 </form>
                 {%endif%}
             </td>
-            <td > 
+            <td> 
                 {% if review.user.user.username == request.user.username %}
                 <form action="/Reviews/updateReview/{{review.id}}/{{movie.id}}/" method="get">
                     <input class="btn btn-primary btn-sm" type="submit" value="Editar"/>
                 </form>
                 {%endif%}
             </td>
-            <td style="text-align: right; width: 220px; color: crimson;">
-                {{review.date|date:"d/m/Y"}} | <b>{{review.user.user.username}}</b>
-            </td>
         </tr>
     </table><br/>
 
-{% endfor %}
+{% endfor %}<br/>
 
 {% endblock %}

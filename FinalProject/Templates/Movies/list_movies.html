@@ -1,3 +1,29 @@
+<style>
+  .score_good {
+    color:green;
+    font-size: 20px; 
+    font-weight: bold;
+  }
+  .score_regular {
+    color:goldenrod;
+    font-size: 20px; 
+    font-weight: bold;
+  }
+  .score_bad {
+    color:crimson;
+    font-size: 20px; 
+    font-weight: bold;
+  }
+  .score_img{
+    width : 19px;
+    height: 19px;
+  }
+  table {
+    width: 200px; 
+    text-align: center;
+  }
+</style>
+
 {% extends 'menu.html'%}
 
 {% block title %}Lista de Peliculas{% endblock %}
@@ -14,7 +40,7 @@
 {% for category in categories %}
 <hr/>
   <p><b>{{category.name}}</b></p>
-  <table style="width: 200px; text-align: center;">
+  <table>
     <tr >
       {% for movie in movies %}
         {%if category == movie.category%}
@@ -27,17 +53,17 @@
             {% else %}
               <p style="margin-bottom: -1%; height: 45px; color: red;"><b>{{movie.title}}</b></p>
             {% endif %}
-            {% if movie.score > 3 %}
-              <p style="color:green;"><b>{{movie.score}}</b></p>
-            {% elif movie.score == 3 %}  
-              <p style="color:goldenrod;"><b>{{movie.score}}</b></p>
+            {% if movie.score >= 4 %}
+              <p class="score_good"><img class="score_img" src="/Media/bien.jpg"> {{movie.score}}</p>
+            {% elif movie.score >= 3 and movie.score < 4 %}  
+              <p class="score_regular"><img class="score_img" src="/Media/regular.jpg"> {{movie.score}}</p>
             {% elif movie.score < 3 %}     
-              <p style="color:crimson;"><b>{{movie.score}}</b></p>
+              <p class="score_bad"><img class="score_img" src="/Media/mal.jpg"> {{movie.score}}</p>
             {% else %}
               <p style="color: blue;"><b>No Hay Reseñas</b></p>
             {% endif %}
 
-            <table style="width: 200px; text-align: center;">
+            <table>
               <tr>
                 <td style="text-align: center;">
                   <form method="GET" action="/Reviews/listReviews/{{movie.id}}/">
