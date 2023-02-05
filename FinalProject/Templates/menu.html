@@ -19,7 +19,11 @@
                   Categorias
                 </a>
                 <div class="dropdown-menu">
-                {% block categories%}{% endblock %}
+                {% if categories %}
+                {% for category in categories%}
+                    <a class="dropdown-item" href="/Movies/listMoviesCategory/{{category.id}}/">{{category.name}}</a>
+                {% endfor %}
+                {% endif %}
                 </div>
             </div>
             {% if request.user.is_authenticated %}

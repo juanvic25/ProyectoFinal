@@ -1,0 +1,73 @@
+<style>
+
+        .tabla {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        }
+        
+        .celda1 {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        text-align: center;
+        }
+        .celda2 {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        text-align: left;
+        }
+        .fila:nth-child(even) {
+        background-color: #dddddd;
+        }
+    
+</style>
+
+{% extends 'menu.html'%}
+
+{% block title %}Categorias{% endblock %}
+
+{% block content %}
+    <div class="card" style="margin-right: 700px;">
+        <p><b>REGISTRAR NUEVA CATEGORIA</b></p>
+        {% if form %}
+            <form action="/Movies/createCategory/" method="POST">
+                {% csrf_token %}
+                <table>
+                    {{form.as_table}}
+                </table>
+                <p></p>
+                <input type="submit" value="Grabar">
+            </form>
+        {% endif %}
+        {% if errors %}
+            <p></p>
+            <p style="color: crimson;">{{errors}}</p>
+        {% endif %}
+    </div>
+    <div class="card" style=" margin-top: 20px; margin-right: 700px;">
+        <table class="tabla">
+            <tr class="fila" >
+                <th class="celda1">Nombre de la Categoria</th>
+                <th class="celda1">Activo</th>
+                <th class="celda1">Editar</th>
+            </tr>
+            {% if categories_all %}
+            {% for category in categories_all%}
+            <tr class="fila">
+                <form action="/Movies/updateCategory/{{category.id}}/" method="get">
+                <td class="celda2">{{category.name}}</td>
+                {% if category.active%}
+                    <td class="celda1"><img src="/Media/active.jpg" style="width: 20px; height: 20px;"></td>
+                {% else %}
+                    <td class="celda1"><img src="/Media/inactive.jpg" style="width: 20px; height: 20px;"></td>
+                {% endif %}
+                <td class="celda1"><input type="submit" value="Editar"></td>
+                </form>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </table>
+    </div>
+{% endblock %}

@@ -2,14 +2,6 @@
 
 {% block title %}Registrar Reseñas{% endblock %}
 
-{% block categories %}
-{% if categories %}
-    {% for category in categories%}
-    <a class="dropdown-item" href="/Movies/listMoviesCategory/{{category.id}}/">{{category.name}}</a>
-    {% endfor %}
-{% endif %}
-{% endblock %}
-
 {% block content %}
 {% if movie %}
     <form>

@@ -1,7 +1,9 @@
 from django import forms
 from Movies.models import category
 
-class CategoryForm(forms.ModelForm ):
+class CategoryForm(forms.Form ):
+    name    = forms.CharField(widget=forms.Textarea(attrs={"rows":1,"cols":55}),required=True, label='Nombre')
+    active  = forms.BooleanField(required=False,initial=True, label='Activo')
     class Meta:
         model = category
         fields = ['name','active']

@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, Pass
 from django.contrib.auth.models import User
 from Users.forms import UserProfileForm
 from Users.models import UserProfile
-from Movies.models import category
+from Movies.models import category, movie
 
 def login_view(request):
     categories_all = category.objects.filter(active = True)
@@ -21,9 +21,15 @@ def login_view(request):
 
             if user is not None:
                 login(request,user)
+
+                if request.user.is_superuser:
+                    movies_list = movie.objects.all()
+                else:
+                    movies_list = movie.objects.filter(active=True)
+
                 context={'categories': categories_all,
-                        'mensaje':'logueado'}
-                return render(request,'index.html',context=context)
+                            'movies':movies_list}
+                return render(request,'Movies/list_movies.html',context=context)
             else:
                 context = { 'categories': categories_all,
                             'error':'Contraseña Incorrecta',
@@ -61,9 +67,16 @@ def update_profile(request):
             user.profile.date_birth = form.cleaned_data['date_birth']
             user.profile.avatar     = form.cleaned_data['avatar']
             user.profile.save()
+
+            if request.user.is_superuser:
+                movies_list = movie.objects.all()
+            else:
+                movies_list = movie.objects.filter(active=True)
+
             context={'categories': categories_all,
-                    'mensaje':'Se Guardaron los cambios'}
-            return render(request,'index.html',context=context)
+                            'movies':movies_list}
+
+            return render(request,'/Movies/list_movies.html',context=context)
         else:
             context={'categories': categories_all,
                     'form_errores': form.errors,

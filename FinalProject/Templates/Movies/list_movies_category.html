@@ -2,14 +2,6 @@
 
 {% block title %}Lista de Peliculas{% endblock %}
 
-{% block categories %}
-{% if categories %}
-    {% for category in categories%}
-    <a class="dropdown-item" href="/Movies/listMoviesCategory/{{category.id}}/">{{category.name}}</a>
-    {% endfor %}
-{% endif %}
-{% endblock %}
-
 {% block buscar %}
 <form class="form-inline my-2 my-lg-0" action="/Movies/listMoviesCategory/{{category_select.id}}" method="GET">
   <input class="form-control mr-sm-2" type="search" placeholder="Titulo de Pelicula" aria-label="Search" name="search">

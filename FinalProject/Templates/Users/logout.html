@@ -2,14 +2,6 @@
 
 {% block title %}Loguearte{% endblock %}
 
-{% block categories %}
-    {% if categories %}
-        {% for category in categories%}
-            <a class="dropdown-item" href="#">{{category.name}}</a>
-        {% endfor %}
-    {% endif %}
-{% endblock %}
-
 {% block content %}
     <h2 style="text-align:center; color: crimson;">Sesión Cerrada</h2>
 {% endblock %}
