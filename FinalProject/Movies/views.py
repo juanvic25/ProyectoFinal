@@ -149,8 +149,8 @@ def listMovies(request):
     return render(request,'Movies/list_movies.html',context=context)
 
 def listMoviesCategory(request,id):
-    category_select = category.objects.get(id=id)
     categories_active = category.objects.filter(active = True)
+    category_select = category.objects.get(id=id)
     if 'search' in request.GET:
         filtro = request.GET['search']
         if request.user.is_superuser:
@@ -168,4 +168,3 @@ def listMoviesCategory(request,id):
                 'movies' : movies_list
             }
     return render(request,'Movies/list_movies_category.html',context=context)
-

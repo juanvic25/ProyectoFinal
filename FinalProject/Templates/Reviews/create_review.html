@@ -1,3 +1,35 @@
+<style>
+    table{
+        width: 1000px; 
+    }
+    .poster{
+        width: 200px; 
+        text-align: center;
+    }
+    .detalles{
+        width: 650px; 
+    }
+    .score_good {
+    color:green;
+    text-align: center;
+    width: 120px;
+    }
+    .score_regular {
+    color:goldenrod;
+    text-align: center;
+    width: 120px;
+    }
+    .score_bad {
+    color:crimson;
+    text-align: center;
+    width: 120px;
+    }
+    .score_img{
+    border: 5px; 
+    border-radius: 50%;
+    }
+</style>
+
 {% extends 'menu.html'%}
 
 {% block title %}Registrar Reseñas{% endblock %}
@@ -5,39 +37,46 @@
 {% block content %}
 
 {% if movie %}
-<table border="2" style="width: 970px;">
+<table align="center">
     <tr>
         {% if movie.poster %}
-            <td rowspan="7" style="width: 200px; text-align: center;"> <img src="{{movie.poster.url}}" width="180px" height="250px" alt="POSTER"></td>
+            <td class="poster" rowspan="7"> <img src="{{movie.poster.url}}" width="180px" height="250px" alt="POSTER"></td>
         {% else %}
-            <td rowspan="7" style="width: 200px; text-align: center;"> <img width="150px" height="200px" alt="POSTER"></td>
+            <td class="poster" rowspan="7"> <img width="150px" height="200px" alt="POSTER"></td>
         {% endif %}
     </tr>
     <tr>
-        <td><h2>{{movie.title}}</h2></td>
-        <td style="text-align: center;"><h4>Puntaje Promedio</h4></td></tr>
-    <tr>
-        <td><p >{{movie.summary}}</p></td>
-        {% if movie.score > 3 %}
-            <td rowspan="6" style="text-align: center; color:green"><h1>{{movie.score}}</h1></td>
-        {% elif movie.score == 3 %}  
-            <td rowspan="6" style="text-align: center; color:goldenrod"><h1>{{movie.score}}</h1></td>
+        <td class="detalles"><h2>{{movie.title}}</h2></td>
+        {% if movie.score >= 4 %}
+            <td class="score_good" rowspan="7">
+                <img src="/Media/bien.jpg"><h1>{{movie.score}}</h1>
+            </td>
+        {% elif movie.score >= 3 and movie.score < 4 %}  
+            <td class="score_regular" rowspan="7">
+                <img src="/Media/regular.jpg"><h1>{{movie.score}}</h1>
+            </td>
         {% elif movie.score < 3 %}     
-            <td rowspan="6" style="text-align: center; color:crimson;"><h1>{{movie.score}}</h1></td>
+            <td class="score_bad" rowspan="7">
+                <img src="/Media/mal.jpg"><h1>{{movie.score}}</h1>
+            </td>
         {% else %}
-            <td rowspan="6" style="text-align: center; color: blue;"><h3>No Hay Reseñas</h3></td>
+            <td rowspan="7" style="text-align: center; color: blue;"><h3>No Hay Reseñas</h3></td>
         {% endif %}
     </tr>
-    <tr><td><b>Director: </b>{{movie.director}}</td></tr>
-    <tr><td><b>Duración: </b>{{movie.duration}} min.</td></tr>
-    <tr><td><b>Categoria: </b>{{movie.category}}</td></tr>
-    <tr><td><b>Fecha de Lanzamiento: </b>{{movie.release_date|date:"d/m/y"}}</td></tr>
+    <tr><td class="detalles"><p style="text-align: justify;">{{movie.summary}}</p></td></tr>
+    <tr><td class="detalles"><b>Director: </b>{{movie.director}}</td></tr>
+    <tr><td class="detalles"><b>Duración: </b>{{movie.duration}} min.</td></tr>
+    <tr><td class="detalles"><b>Categoria: </b>{{movie.category}}</td></tr>
+    <tr><td class="detalles"><b>Fecha de Lanzamiento: </b>{{movie.release_date|date:"d/m/Y"}}</td></tr>
 </table><br/>
 {% endif %}
 
-<form method="post">
+<table align="center">
+    <tr><td>
+    <form method="post">
     {% csrf_token %}
-    <div class="form-group">
+
+    <div  class="form-group">
       <label for="exampleFormControlTextarea1"><b>Ingresar Reseña:</b></label><br/>
       <textarea rows="3" cols="121" name="summary"></textarea>
     </div>
@@ -65,7 +104,9 @@
         </div>
     </div>
     <input class="btn btn-primary btn-sm" type="submit" value="Grabar"/>
-  </form><br/>
+    </form><br/>
+    </td></tr>
+</table>
   <hr/>
 
 {% endblock %}

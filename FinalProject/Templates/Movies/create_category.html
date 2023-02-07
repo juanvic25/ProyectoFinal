@@ -1,27 +1,25 @@
 <style>
-
-        .tabla {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-        }
-        
-        .celda1 {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-        text-align: center;
-        }
-        .celda2 {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-        text-align: left;
-        }
-        .fila:nth-child(even) {
-        background-color: #dddddd;
-        }
+    .tabla {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    }
     
+    .celda1 {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    text-align: center;
+    }
+    .celda2 {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    text-align: left;
+    }
+    .fila:nth-child(even) {
+    background-color: #dddddd;
+    }
 </style>
 
 {% extends 'menu.html'%}
@@ -69,5 +67,5 @@
             {% endfor %}
             {% endif %}
         </table>
-    </div>
+    </div><br/><br/>
 {% endblock %}

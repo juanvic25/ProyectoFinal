@@ -6,7 +6,7 @@ class CategoryForm(forms.ModelForm ):
         model = category
         fields = '__all__'
         widgets = {
-            'name': forms.Textarea(attrs={"rows":1,"cols":72}),
+            'name': forms.Textarea(attrs={"rows":1,"cols":70}),
         }
 
 class MovieForm(forms.ModelForm):

@@ -67,7 +67,7 @@
     <tr><td class="detalles"><b>Director: </b>{{movie.director}}</td></tr>
     <tr><td class="detalles"><b>Duración: </b>{{movie.duration}} min.</td></tr>
     <tr><td class="detalles"><b>Categoria: </b>{{movie.category}}</td></tr>
-    <tr><td class="detalles"><b>Fecha de Lanzamiento: </b>{{movie.release_date|date:"d/m/y"}}</td></tr>
+    <tr><td class="detalles"><b>Fecha de Lanzamiento: </b>{{movie.release_date|date:"d/m/Y"}}</td></tr>
 </table><br/>
 {% endif %}
 
@@ -83,16 +83,15 @@
             <p style="color: blue;"><b>DEBES LOGUEARTE PARA PODER REGISTRAR UNA RESEÑA</b></p>
         {% endif %}
     </td></tr>
-</table>
-<hr/>
+    {% if message%}
+    <tr><td>
+        <br/><p style="color: red;"><b>{{message}}</b></p>
+    </td></tr>
+    
+    {% endif %}
+    <tr><td><br/><h4>Reseñas de los Usuarios</h4></td></tr>
+</table><br/>
 
-{% if message%}
-    <p style="color: red;">{{message}}</p>
-{% endif %}
-
-<table align="center">
-    <tr><td><h4>Reseñas de los Usuarios</h4></td></tr>
-</table>
 {% for review in reviews%}
     <table border="1" align="center" rules="groups" style="background-color:whitesmoke">
         <tr style="height: 30px;">
